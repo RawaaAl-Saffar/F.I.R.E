@@ -1,1 +1,35 @@
+import requests
+import json
 
+# NOAA HMS Fire Detection API endpoint
+api_url = "https://hms.pfrr.alaska.edu/incident-api/v1/incident"
+
+# Parameters for your query
+start_date = "2023-06-10"
+end_date = "2023-07-10"
+bounding_box = "-130,24,-65,50"  # Format: west, south, east, north
+
+# Define the query parameters
+params = {
+    "satellite": "all",
+    "start": start_date,
+    "end": end_date,
+    "bbox": bounding_box,
+    "format": "json",
+}
+
+try:
+    # Send a GET request to the API
+    response = requests.get(api_url, params=params)
+    
+    # Check if the request was successful (HTTP status code 200)
+    if response.status_code == 200:
+        # Parse the JSON response
+        data = response.json()
+        
+        # Print the data or process it as needed
+        print(json.dumps(data, indent=2))
+    else:
+        print(f"Error: Unable to fetch data. Status code: {response.status_code}")
+except Exception as e:
+    print(f"An error occurred: {str(e)}")
